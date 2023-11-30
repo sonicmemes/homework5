@@ -1,4 +1,6 @@
 from pprint import pprint
+
+
 with open("recipes.txt", encoding='utf-8') as recipes:
     # print(recipes.read())
     lines = recipes.read().splitlines()
@@ -35,4 +37,16 @@ def task_1():
         cook_book.update(transform_data(dish))
     return cook_book
 
-pprint(task_1(), width=1, sort_dicts=False)
+def get_shop_list_by_dishes(dishes, person_count):
+    result = {}
+    for dish in dishes:
+        if dish in task_1():
+            for ingridient in task_1()[dish]:
+                multiply = ingridient['quantity'] * person_count
+                ingridient.update({'quantity': multiply})
+                result.update(ingridient)
+    return (result)
+
+
+# pprint(task_1(), width=1, sort_dicts=False)
+print(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
