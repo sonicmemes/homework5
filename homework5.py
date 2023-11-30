@@ -1,4 +1,5 @@
 from pprint import pprint
+import itertools
 
 
 with open("recipes.txt", encoding='utf-8') as recipes:
@@ -40,13 +41,13 @@ def task_1():
 def get_shop_list_by_dishes(dishes, person_count):
     result = {}
     for dish in dishes:
-        if dish in task_1():
-            for ingridient in task_1()[dish]:
-                multiply = ingridient['quantity'] * person_count
-                ingridient.update({'quantity': multiply})
-                result.update(ingridient)
-    return (result)
+        ingridients = task_1()[dish]
+        for index,val in enumerate(ingridients):
+            multiply = val['quantity'] * person_count
+            val.update({'quantity': multiply})
+            result = result | val
+            print(result)
 
 
-# pprint(task_1(), width=1, sort_dicts=False)
+pprint(task_1(), indent=4, sort_dicts=False)
 print(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
