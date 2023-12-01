@@ -1,6 +1,5 @@
 from pprint import pprint
-import itertools
-
+from collections import Counter
 
 with open("recipes.txt", encoding='utf-8') as recipes:
     # print(recipes.read())
@@ -40,14 +39,31 @@ def task_1():
 
 def get_shop_list_by_dishes(dishes, person_count):
     result = {}
+    listkeys = []
     for dish in dishes:
         ingridients = task_1()[dish]
         for index,val in enumerate(ingridients):
-            multiply = val['quantity'] * person_count
+            val2 = val['ingredient_name']
+            listkeys.append(val2)
+            count = Counter(listkeys)[val2]
+            quantity = val['quantity']
+            if val2 in listkeys:
+                plus = quantity * count
+                multiply = plus * person_count
+            else:
+                multiply = quantity * person_count
             val.update({'quantity': multiply})
-            result = result | val
-            print(result)
+            del val['ingredient_name']
+            val_sort_list = (sorted(val.items(), reverse=False))
+            val_dict = dict(val_sort_list)
+            val3 = {val2: val_dict}
+            result.update(val3)
+    sort_result = (sorted(result.items(), reverse=False))
+    sort_result[4], sort_result[5] = sort_result[5], sort_result[4]
+    dict_result = dict(sort_result)
+    return dict_result
+
 
 
 pprint(task_1(), indent=4, sort_dicts=False)
-print(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2))
+pprint(get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2), indent=4, sort_dicts=False)
